@@ -28,7 +28,7 @@ public class DataSourceConfig {
         targetDataSources.put("tenant2",createDataSource("jdbc:postgresql://localhost:5432/tenant2_db"));
 
         multiTenantDataSource.setTargetDataSources(targetDataSources);
-        multiTenantDataSource.setDefaultTargetDataSource(targetDataSources.get("tenant2"));
+        multiTenantDataSource.setDefaultTargetDataSource(targetDataSources.get("tenant1"));
         multiTenantDataSource.afterPropertiesSet();
         return multiTenantDataSource;
     }

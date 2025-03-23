@@ -2,17 +2,26 @@ package net.mohamed.springmultitenant.tenant;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.mohamed.springmultitenant.tenant.resolvers.HttpHeaderTenantResolvers;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class TenantInterceptor implements HandlerInterceptor {
+
+    private final HttpHeaderTenantResolvers headerTenantResolver;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String tenantId = request.getHeader("X-Tenant-ID");
+
+        log.info("TenantInterceptor preHandle");
+        String tenantId = headerTenantResolver.resolveTenantId(request);
         if (tenantId != null) {
             TenantContext.setCurrentTenant(tenantId);
         }else {

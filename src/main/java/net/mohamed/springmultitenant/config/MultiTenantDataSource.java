@@ -1,13 +1,14 @@
 package net.mohamed.springmultitenant.config;
 
+import lombok.extern.slf4j.Slf4j;
 import net.mohamed.springmultitenant.tenant.TenantContext;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-
+@Slf4j
 public class MultiTenantDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        System.out.println("Switching to tenant: " + TenantContext.getCurrentTenant()); // Ajout du log
+        log.info("Switching to tenant: {}", TenantContext.getCurrentTenant()); // Ajout du log
         return TenantContext.getCurrentTenant();
 
     }

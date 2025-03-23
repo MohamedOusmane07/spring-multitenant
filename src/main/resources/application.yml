@@ -1,9 +1,10 @@
 spring:
   datasource:
-    username: admin
+    username: postgres
     password: admin
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-
+server:
+  port: 8732
