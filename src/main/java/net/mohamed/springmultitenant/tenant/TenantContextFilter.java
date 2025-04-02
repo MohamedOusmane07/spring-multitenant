@@ -29,7 +29,8 @@ public class TenantContextFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(tenantIdentifier)) {
             TenantContext.setCurrentTenant(tenantIdentifier);
         } else  {
-            throw new TenantResolutionException("A valid tenant identifier must be specified for requests to %s".formatted(request.getRequestURI()));
+            TenantContext.setCurrentTenant("default");
+           // throw new TenantResolutionException("A valid tenant identifier must be specified for requests to %s".formatted(request.getRequestURI()));
         }
 
         try {

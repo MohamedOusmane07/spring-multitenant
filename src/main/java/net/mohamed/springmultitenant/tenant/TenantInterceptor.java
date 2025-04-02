@@ -25,8 +25,9 @@ public class TenantInterceptor implements HandlerInterceptor {
         if (tenantId != null) {
             TenantContext.setCurrentTenant(tenantId);
         }else {
-            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-            return false;
+            TenantContext.setCurrentTenant("default");
+           // response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+            //return false;
         }
         return true;
 
