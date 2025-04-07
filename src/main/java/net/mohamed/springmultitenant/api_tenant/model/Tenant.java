@@ -1,4 +1,4 @@
-package net.mohamed.springmultitenant.api_tenant;
+package net.mohamed.springmultitenant.api_tenant.model;
 
 
 import jakarta.persistence.*;
@@ -12,14 +12,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Table
 public class Tenant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String tenant_id;
-    private String db_url;
-    private String db_username;
-    private String db_password;
+    @Column(unique = true)
+    private String tenantId;
+    private String dbUrl;
+    private String dbUsername;
+    private String dbPassword;
 }

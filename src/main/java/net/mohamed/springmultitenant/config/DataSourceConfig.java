@@ -3,8 +3,8 @@ package net.mohamed.springmultitenant.config;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.mohamed.springmultitenant.api_tenant.Tenant;
-import net.mohamed.springmultitenant.api_tenant.TenantRepository;
+import net.mohamed.springmultitenant.api_tenant.model.Tenant;
+import net.mohamed.springmultitenant.api_tenant.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ public class DataSourceConfig {
     // Créer une DataSource par défaut
     @Bean
     public DataSource dataSource() {
-        targetDataSources.put("default", createDataSource("jdbc:postgresql://localhost:5432/master_db")); // Ajouter la source de données par défaut
+        targetDataSources.put("default", createDataSource("jdbc:postgresql://localhost:5432/db_centrale")); // Ajouter la source de données par défaut
         // DataSource par défaut pour démarrer l'application
        // HikariDataSource defaultDataSource = (HikariDataSource) createDataSource("jdbc:postgresql://localhost:5432/master_db");
 
@@ -61,8 +61,8 @@ public class DataSourceConfig {
 
             for (Tenant tenant : tenants) {
                 log.info("Creating tenant " + tenant.toString());
-                String tenantId = tenant.getTenant_id();
-                String dbUrl = tenant.getDb_url();
+                String tenantId = tenant.getTenantId();
+                String dbUrl = tenant.getDbUrl();
                 targetDataSources.put(tenantId, createDataSource(dbUrl)); // Créer et ajouter les sources de données des tenants
             }
 

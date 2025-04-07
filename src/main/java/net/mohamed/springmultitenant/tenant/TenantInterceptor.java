@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Slf4j
 public class TenantInterceptor implements HandlerInterceptor {
@@ -25,7 +25,7 @@ public class TenantInterceptor implements HandlerInterceptor {
         if (tenantId != null) {
             TenantContext.setCurrentTenant(tenantId);
         }else {
-            TenantContext.setCurrentTenant("default");
+            TenantContext.setCurrentTenant("tenant1");
            // response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
             //return false;
         }
