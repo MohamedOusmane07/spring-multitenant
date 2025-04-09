@@ -1,4 +1,4 @@
-package net.mohamed.springmultitenant.config;
+package net.mohamed.springmultitenant.tenant.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;

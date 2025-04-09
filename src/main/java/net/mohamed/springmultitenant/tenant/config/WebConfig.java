@@ -1,4 +1,4 @@
-package net.mohamed.springmultitenant.config;
+package net.mohamed.springmultitenant.tenant.config;
 
 import lombok.RequiredArgsConstructor;
 import net.mohamed.springmultitenant.tenant.TenantInterceptor;

@@ -12,24 +12,38 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/tenants")
+@RequestMapping("api/tenants")
 public class TenantController {
 
     private final TenantService tenantService;
 
 
     @GetMapping
-    public ResponseEntity<List<Tenant>> getAllTenants() {
-        List<Tenant> tenants = tenantService.getAllTenants();
-        return ResponseEntity.status(HttpStatus.OK).body(tenants);
+    public List<Tenant> getAllTenants() {
+        return tenantService.getAllTenants();
     }
 
 
     @PostMapping
     public ResponseEntity<String> createTenant(@RequestBody Tenant tenant) {
-            String tenantId = tenantService.createTenant(tenant);
+            String tenantId = tenantService.addTenant(tenant);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Tenant created with ID: " + tenantId);
+                .body("Tenant created with TenantID: " + tenantId);
+    }
+
+    @GetMapping("/{id}")
+    public Tenant getTenantById(@PathVariable Integer id) {
+        return tenantService.getTenantById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Tenant updateTenant(@PathVariable Integer id, @RequestBody Tenant tenant) {
+        return tenantService.updateTenant(id, tenant);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteTenantById(@PathVariable Integer id) {
+        return tenantService.deleteTenantById(id);
     }
 
 }
