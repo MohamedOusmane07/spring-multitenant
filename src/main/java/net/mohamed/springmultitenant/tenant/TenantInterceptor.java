@@ -6,46 +6,53 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mohamed.springmultitenant.tenant.resolvers.HttpHeaderTenantResolvers;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-//@Component
+// @Component
 @RequiredArgsConstructor
 @Slf4j
 public class TenantInterceptor implements HandlerInterceptor {
 
-    private final HttpHeaderTenantResolvers headerTenantResolver;
+  private final HttpHeaderTenantResolvers headerTenantResolver;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+      throws Exception {
 
-        log.info("TenantInterceptor preHandle");
-        String tenantId = headerTenantResolver.resolveTenantId(request);
-        if (tenantId != null) {
-            TenantContext.setCurrentTenant(tenantId);
-        }else {
-            TenantContext.setCurrentTenant("tenant1");
-           // response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-            //return false;
-        }
-        return true;
-
+    log.info("TenantInterceptor preHandle");
+    String tenantId = headerTenantResolver.resolveTenantId(request);
+    if (tenantId != null) {
+      TenantContext.setCurrentTenant(tenantId);
+    } else {
+      TenantContext.setCurrentTenant("tenant1");
+      // response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+      // return false;
     }
+    return true;
+  }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                           @Nullable ModelAndView modelAndView) throws Exception {
-        clear();
-    }
+  @Override
+  public void postHandle(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Object handler,
+      @Nullable ModelAndView modelAndView)
+      throws Exception {
+    clear();
+  }
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-                                @Nullable Exception ex) throws Exception {
-        clear();
-    }
+  @Override
+  public void afterCompletion(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Object handler,
+      @Nullable Exception ex)
+      throws Exception {
+    clear();
+  }
 
-    private void clear() {
-        TenantContext.clearCurrentTenant();
-    }
+  private void clear() {
+    TenantContext.clearCurrentTenant();
+  }
 }

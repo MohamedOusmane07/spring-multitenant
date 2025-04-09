@@ -1,8 +1,8 @@
 package net.mohamed.springmultitenant.exception.tenant;
 
-public class TenantNotFoundException extends RuntimeException{
+public class TenantNotFoundException extends RuntimeException {
 
-    public TenantNotFoundException(String message) {
-        super(message);
-    }
+  public TenantNotFoundException(String message) {
+    super(message);
+  }
 }
