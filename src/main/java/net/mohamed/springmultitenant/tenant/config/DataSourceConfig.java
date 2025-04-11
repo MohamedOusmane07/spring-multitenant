@@ -37,8 +37,7 @@ public class DataSourceConfig {
             "jdbc:postgresql://localhost:5432/db_centrale")); // Ajouter la source de données par
     // défaut
     // DataSource par défaut pour démarrer l'application
-    // HikariDataSource defaultDataSource = (HikariDataSource)
-    // createDataSource("jdbc:postgresql://localhost:5432/master_db");
+
 
     multiTenantDataSource = new MultiTenantDataSource();
     multiTenantDataSource.setDefaultTargetDataSource(

@@ -9,7 +9,7 @@ public class MultiTenantDataSource extends AbstractRoutingDataSource {
 
   @Override
   protected Object determineCurrentLookupKey() {
-    log.info("Switching to tenant: {}", TenantContext.getCurrentTenant()); // Ajout du log
+    //log.info("Switching to tenant: {}", TenantContext.getCurrentTenant()); // Ajout du log
     return TenantContext.getCurrentTenant();
   }
 }
