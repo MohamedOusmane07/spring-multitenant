@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(schema = "main")
 public class EbUser {
 
   @Id

@@ -1,19 +1,14 @@
 package net.mohamed.springmultitenant.tenant;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.mohamed.springmultitenant.tenant.resolvers.HttpHeaderTenantResolvers;
-import org.springframework.lang.Nullable;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 // @Component
 @RequiredArgsConstructor
 @Slf4j
-public class TenantInterceptor implements HandlerInterceptor {
+public class TenantInterceptor {
 
+  /*
   private final HttpHeaderTenantResolvers headerTenantResolver;
 
   @Override
@@ -55,4 +50,6 @@ public class TenantInterceptor implements HandlerInterceptor {
   private void clear() {
     TenantContext.clearCurrentTenant();
   }
+
+   */
 }

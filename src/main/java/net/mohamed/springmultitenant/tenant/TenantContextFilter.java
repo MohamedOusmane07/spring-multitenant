@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.mohamed.springmultitenant.api_tenant.service.TenantService;
 import net.mohamed.springmultitenant.exception.TenantResolutionException;
 import net.mohamed.springmultitenant.exception.user.UserNotAuthenticatedException;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

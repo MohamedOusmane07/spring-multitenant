@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table
+@Entity
+@Table(schema = "main")
 public class Tenant {
 
   @Id
