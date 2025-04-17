@@ -33,7 +33,7 @@ public class FlywayConfig {
                     .dataSource((DataSource) dataSource)
                     .baselineOnMigrate(true)
                     .schemas("flyway")
-                    .locations("classpath:db/migration/default")
+                    .locations("classpath:db/migration/masterdb")
                     .load();
 
             // flyway.repair();

@@ -17,6 +17,13 @@ public class CustomerController {
 
   @GetMapping("/home")
   public String home() {
+    System.out.println("Tenant ID before new thread: " + TenantContext.getCurrentTenant());
+    var thread =
+        new Thread(
+            () -> {
+              System.out.println("Tenant ID in new thread: " + TenantContext.getCurrentTenant());
+            });
+    thread.start();
     return TenantContext.getCurrentTenant();
   }
 

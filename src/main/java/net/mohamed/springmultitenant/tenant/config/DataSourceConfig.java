@@ -59,7 +59,7 @@ public class DataSourceConfig {
           String dbUsername = tenant.getDbUsername();
           String dbPassword = tenant.getDbPassword();
           targetDataSources.put(
-                  tenantId, dataSourceProvider.createDataSource(dbUrl, dbUsername, dbPassword));
+              tenantId, dataSourceProvider.createDataSource(dbUrl, dbUsername, dbPassword));
         }
       }
 
