@@ -1,0 +1,8 @@
+CREATE SCHEMA IF NOT EXISTS main;
+
+CREATE TABLE IF NOT EXISTS main.invoice (
+     id SERIAL PRIMARY KEY,
+     amount DOUBLE PRECISION NOT NULL,
+     currency VARCHAR(255),
+     status VARCHAR(255)
+    );

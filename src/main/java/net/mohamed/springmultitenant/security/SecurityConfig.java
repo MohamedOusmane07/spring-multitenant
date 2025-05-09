@@ -31,7 +31,7 @@ public class SecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
-            request -> request.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll())
+            request -> request.requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/api/invoice").permitAll())
         .authorizeHttpRequests(request -> request.anyRequest().authenticated())
         .oauth2ResourceServer(
             oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
