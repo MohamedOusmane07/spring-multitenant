@@ -21,22 +21,25 @@ public class KafkaTenantTopicProvisioner {
   private final DataSourceConfig dataSourceConfig;
 
   @Bean
-  public ApplicationRunner  createTenantTopics() {// Create tenant topics using KafkaAdmin
+  public ApplicationRunner createTenantTopics() {
     return args -> {
-    log.info("Creating tenant topics");
-    List<String> tenantIds = dataSourceConfig.getAllTenantIds();
+      log.info("Creating tenant topics");
+      List<String> tenantIds = dataSourceConfig.getAllTenantIds();
 
+      // Liste des préfixes de topics
+      List<String> topicPrefixes = List.of("invoice", "provision");
 
-    List<NewTopic> topics =
-        tenantIds.stream()
-            .map(tenantId -> new NewTopic("invoice-" + tenantId, 3, (short) 1))
-            .collect(Collectors.toList());
+      // Génération des topics pour chaque tenantId et chaque préfixe
+      List<NewTopic> topics = tenantIds.stream()
+              .flatMap(tenantId -> topicPrefixes.stream()
+                      .map(prefix -> new NewTopic(prefix + "-" + tenantId, 3, (short) 1)))
+              .collect(Collectors.toList());
 
-    kafkaAdmin.createOrModifyTopics(topics.toArray(new NewTopic[0]));
-
-
-  };
-}
+      // Création ou modification des topics
+      kafkaAdmin.createOrModifyTopics(topics.toArray(new NewTopic[0]));
+      log.info("Topics created: {}", topics);
+    };
+  }
 }
 
 
