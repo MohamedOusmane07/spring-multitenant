@@ -8,10 +8,11 @@ import lombok.Data;
 @Table(schema = "main")
 public class Invoice {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private double amount;
-    private String currency;
-    private String status;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  private double amount;
+  private String currency;
+  private String status;
 }

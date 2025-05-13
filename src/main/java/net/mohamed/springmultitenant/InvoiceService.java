@@ -10,15 +10,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InvoiceService {
 
-    private final InvoiceRepository invoiceRepository;
+  private final InvoiceRepository invoiceRepository;
 
-    public void createInvoice(InvoiceDto invoiceDto) {
-        Invoice invoice = new Invoice();
-        invoice.setAmount(invoiceDto.getAmount());
-        invoice.setCurrency(invoiceDto.getCurrency());
-        invoice.setStatus(invoiceDto.getStatus());
-        invoiceRepository.save(invoice);
-    }
-
-
+  public void createInvoice(InvoiceDto invoiceDto) {
+    Invoice invoice = new Invoice();
+    invoice.setAmount(invoiceDto.getAmount());
+    invoice.setCurrency(invoiceDto.getCurrency());
+    invoice.setStatus(invoiceDto.getStatus());
+    invoiceRepository.save(invoice);
+  }
 }

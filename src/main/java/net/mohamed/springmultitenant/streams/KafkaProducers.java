@@ -16,37 +16,34 @@ import org.springframework.util.MimeTypeUtils;
 @Slf4j
 public class KafkaProducers {
 
+  private final StreamBridge streamBridge;
 
-    private final StreamBridge streamBridge;
+  public void sendInvoice(InvoiceDto dto) {
+    // Récupération du tenant courant
+    String tenantId = TenantContext.getCurrentTenant();
 
-    public void sendInvoice(InvoiceDto dto) {
-        String tenantId = TenantContext.getCurrentTenant();
-        log.info("Current tenant ID: {}", tenantId);
-        Message<InvoiceDto> message = MessageBuilder
-                .withPayload(dto)
-                .setHeader("tenantId", tenantId)
-                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-                .build();
-
-        log.info("Producer send invoice for tenant [{}]: {}", tenantId, dto);
-        streamBridge.send("invoiceEventProducer", message);
+    if (tenantId == null) {
+      throw new IllegalStateException("Tenant ID is not set in context");
     }
 
+    // Construction du nom de topic dynamique (ex: invoice-tenantA)
+    String topicName = "invoice-" + tenantId;
 
-     public void sendProvision(InvoiceDto dto) {
-        String tenantId = TenantContext.getCurrentTenant();
-        log.info("Current tenant ID: {}", tenantId);
-        Message<InvoiceDto> message = MessageBuilder
-                .withPayload(dto)
-                .setHeader("tenantId", tenantId)
-                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-                .build();
+    // Construction du message avec le header tenant
+    Message<InvoiceDto> message =
+        MessageBuilder.withPayload(dto)
+            .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+            // .setHeader("X-Tenant-ID", tenantId) // Header custom
+            .build();
 
-        log.info("Sending invoice for tenant [{}]: {}", tenantId, dto);
-        streamBridge.send("provisionEventProducer", message);
-        log.info("Provision sent to Kafka");
+    log.info("Sending invoice for tenant [{}] to topic [{}]: {}", tenantId, topicName, dto);
+
+    boolean result = streamBridge.send(topicName, message);
+
+    if (result) {
+      log.info("Invoice sent successfully into topic [{}] for tenant [{}]", topicName, tenantId);
+    } else {
+      log.error("Failed to send invoice for tenant [{}]", tenantId);
     }
-
-
-
+  }
 }

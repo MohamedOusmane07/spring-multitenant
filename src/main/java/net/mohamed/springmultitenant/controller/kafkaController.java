@@ -1,6 +1,5 @@
 package net.mohamed.springmultitenant.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mohamed.springmultitenant.dto.InvoiceDto;
@@ -17,16 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class kafkaController {
 
-    private final KafkaProducers producer;
+  private final KafkaProducers producer;
 
-
-    @PostMapping
-    public ResponseEntity<Void> send(@RequestBody InvoiceDto dto) {
-        log.info("Received invoice DTO: {}", dto);
-        producer.sendInvoice(dto);
-        //producer.sendProvision(dto);
-        return ResponseEntity.accepted().build();
-    }
+  @PostMapping
+  public ResponseEntity<Void> send(@RequestBody InvoiceDto dto) {
+    log.info("Received invoice DTO: {}", dto);
+    producer.sendInvoice(dto);
+    // producer.sendProvision(dto);
+    return ResponseEntity.accepted().build();
+  }
 }
-
-

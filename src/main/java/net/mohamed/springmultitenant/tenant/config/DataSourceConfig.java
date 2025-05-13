@@ -68,4 +68,11 @@ public class DataSourceConfig {
       flywayConfig.migrateAllTenants(targetDataSources);
     };
   }
+
+  public List<String> getAllTenantIds() {
+    return targetDataSources.keySet().stream()
+        .filter(key -> !key.equals("default"))
+        .map(Object::toString)
+        .toList();
+  }
 }
