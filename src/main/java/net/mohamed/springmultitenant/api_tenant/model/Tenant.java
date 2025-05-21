@@ -24,4 +24,5 @@ public class Tenant {
   private String dbUrl;
   private String dbUsername;
   private String dbPassword;
+  private String bootstrapServers;
 }

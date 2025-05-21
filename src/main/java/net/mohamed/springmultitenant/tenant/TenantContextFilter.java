@@ -29,10 +29,13 @@ public class TenantContextFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     String requestURI = request.getRequestURI();
-    if (requestURI.startsWith("/swagger-ui/") || requestURI.startsWith("/v3/api-docs/") || requestURI.startsWith("/api/invoice")) {
+    if (requestURI.startsWith("/swagger-ui/")
+        || requestURI.startsWith("/v3/api-docs/")
+        || requestURI.startsWith("/api/invoice")) {
       // Si la requête est pour Swagger UI ou pour la documentation de l'API, on passe directement à
       // la requête suivante
-       TenantContext.setCurrentTenant("tenant10");
+      String tenantId = request.getParameter("tenantId");
+      TenantContext.setCurrentTenant(tenantId);
       filterChain.doFilter(request, response);
       return;
     }
