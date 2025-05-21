@@ -1,8 +1,8 @@
 package net.mohamed.springmultitenant.tenant.config;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,7 @@ public class DataSourceConfig {
 
   private final FlywayConfig flywayConfig;
   private final DataSourceProvider dataSourceProvider;
+  private List<Tenant> tenants;
 
   @Value("${spring.datasource.username}")
   private String defaultDbUsername;
@@ -28,7 +29,7 @@ public class DataSourceConfig {
   private String defaultDbPassword;
 
   private MultiTenantDataSource multiTenantDataSource;
-  Map<Object, Object> targetDataSources = new HashMap<>();
+  private final Map<Object, Object> targetDataSources = new ConcurrentHashMap<>();
 
   @Bean
   public DataSource dataSource() {
@@ -48,7 +49,7 @@ public class DataSourceConfig {
   @Bean
   public ApplicationRunner initializeTenants(TenantRepository tenantRepository) {
     return args -> {
-      List<Tenant> tenants = tenantRepository.findAll();
+      tenants = tenantRepository.findAll();
 
       for (Tenant tenant : tenants) {
         if (!tenant.getTenantId().equals("default")) {
@@ -69,10 +70,28 @@ public class DataSourceConfig {
     };
   }
 
+  public void initializeNewDataSource(
+      String tenantId, String dbUrl, String dbUsername, String dbPassword) {
+    targetDataSources.put(
+        tenantId, dataSourceProvider.createDataSource(dbUrl, dbUsername, dbPassword));
+    multiTenantDataSource.setTargetDataSources(targetDataSources);
+    multiTenantDataSource.afterPropertiesSet();
+    flywayConfig.migrateNewDataSource(targetDataSources.get(tenantId));
+    log.info("DataSource initialized for tenant: {}", tenantId);
+  }
+
   public List<String> getAllTenantIds() {
     return targetDataSources.keySet().stream()
         .filter(key -> !key.equals("default"))
         .map(Object::toString)
         .toList();
+  }
+
+  public List<Tenant> getAllTenants() {
+    return tenants;
+  }
+
+  public Map<Object, Object> getTargetDataSources() {
+    return targetDataSources;
   }
 }

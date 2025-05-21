@@ -1,0 +1,27 @@
+server:
+  port: 8733
+
+spring:
+  datasource:
+    username: postgres
+    password: admin
+  jpa:
+    show-sql: true
+  flyway:
+    enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8731/realms/my-realm
+          jwk-set-uri: http://localhost:8731/realms/my-realm/protocol/openid-connect/certs
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+    admin:
+      auto-create: true
+  cloud:
+    stream:
+      dynamicDestinations: invoice-*,provision-*

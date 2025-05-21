@@ -11,11 +11,10 @@ import org.springframework.stereotype.Component;
 public class FlywayConfig {
 
   public void migrateAllTenants(Map<Object, Object> targetDataSources) {
-    log.info("targetDataSources content: {}", targetDataSources); // Ajout du log
-
+    log.info("targetDataSources content: {}", targetDataSources);
     targetDataSources.forEach(
         (tenantId, dataSource) -> {
-          log.info("Tenant ID: {}", tenantId); // Ajout du log
+          log.info("Tenant ID: {}", tenantId);
           if (tenantId != null && !tenantId.equals("default")) {
             Flyway flyway =
                 Flyway.configure()
@@ -36,10 +35,23 @@ public class FlywayConfig {
                     .locations("classpath:db/migration/masterdb")
                     .load();
 
-            // flyway.repair();
             flyway.migrate();
             System.out.println("Migration exécutées pour le tenant par défaut : " + tenantId);
           }
         });
+  }
+
+  public void migrateNewDataSource(Object datasource) {
+    Flyway flyway =
+        Flyway.configure()
+            .dataSource((DataSource) datasource)
+            .baselineOnMigrate(false)
+            .schemas("flyway")
+            .validateMigrationNaming(true)
+            .ignoreMigrationPatterns("*:missing", "*:Future")
+            .locations("classpath:db/migration/tenants")
+            .load();
+
+    flyway.migrate();
   }
 }
