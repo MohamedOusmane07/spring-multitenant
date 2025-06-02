@@ -15,7 +15,7 @@ public class TenantUtils {
 
   private final DataSourceConfig dataSourceConfig;
 
-  private ConcurrentHashMap<String, String> bootstrapServers = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<String, String> bootstrapServers = new ConcurrentHashMap<>();
 
   public ConcurrentHashMap<String, String> getCusters() {
 
@@ -53,5 +53,14 @@ public class TenantUtils {
     bootstrapServers.remove(tenantId);
     log.info("Removed tenant [{}]", tenantId);
     return bootstrapServers;
+  }
+
+  public String getBootstrapServer(String tenantId) {
+    ConcurrentHashMap<String, String> clusters = getCusters();
+    if (clusters == null || !clusters.containsKey(tenantId)) {
+      log.error("No cluster configuration found for tenant [{}]", tenantId);
+      throw new IllegalStateException("No cluster configuration found for tenant ID: " + tenantId);
+    }
+    return clusters.get(tenantId);
   }
 }
