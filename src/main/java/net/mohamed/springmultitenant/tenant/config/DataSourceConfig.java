@@ -20,7 +20,6 @@ public class DataSourceConfig {
 
   private final FlywayConfig flywayConfig;
   private final DataSourceProvider dataSourceProvider;
-  private List<Tenant> tenants;
 
   @Value("${spring.datasource.username}")
   private String defaultDbUsername;
@@ -30,6 +29,8 @@ public class DataSourceConfig {
 
   private MultiTenantDataSource multiTenantDataSource;
   private final Map<Object, Object> targetDataSources = new ConcurrentHashMap<>();
+  private List<Tenant> tenants;
+  private List<Tenant> tenantListWithoutDefault;
 
   @Bean
   public DataSource dataSource() {
@@ -85,6 +86,10 @@ public class DataSourceConfig {
         .filter(key -> !key.equals("default"))
         .map(Object::toString)
         .toList();
+  }
+
+  public List<Tenant> getAllTenantsWithoutDefault() {
+    return tenants.stream().filter(tenant -> !tenant.getTenantId().equals("default")).toList();
   }
 
   public List<Tenant> getAllTenants() {
